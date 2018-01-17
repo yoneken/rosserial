@@ -39,35 +39,40 @@
 #include "stm32f3xx_hal_uart.h"
 #include "stm32f3xx_hal_tim.h"
 
+extern TIM_HandleTypeDef htim2;
+extern UART_HandleTypeDef huart2;
+
 class STM32Hardware {
   protected:
 	TIM_HandleTypeDef *htim;
     UART_HandleTypeDef *huart;
 
-    const uint16_t rbuflen = 128;
+    const static uint16_t rbuflen = 128;
     uint8_t rbuf[rbuflen];
     uint32_t rind;
     inline uint32_t getRdmaInd(void){ return (rbuflen - huart->hdmarx->Instance->CNDTR) & (rbuflen - 1); }
 
-    const uint16_t tbuflen = 128;
+    const static uint16_t tbuflen = 256;
     uint8_t tbuf[tbuflen];
-    uint32_t tind;
-    inline uint32_t getTdmaInd(void){ return (tbuflen - huart->hdmatx->Instance->CNDTR) & (tbuflen - 1); }
+    uint32_t twind, tfind;
 
   public:
+    STM32Hardware():
+      htim(&htim2), huart(&huart2), rind(0), twind(0), tfind(0){
+    }
+
     STM32Hardware(TIM_HandleTypeDef *htim_, UART_HandleTypeDef *huart_):
-      htim(htim_), huart(huart_), rind(0), tind(0){
+      htim(htim_), huart(huart_), rind(0), twind(0), tfind(0){
     }
   
     void init(){
       HAL_UART_Receive_DMA(huart, rbuf, rbuflen);
-      HAL_UART_Transmit_DMA(huart, tbuf, tbuflen);
 
-      HAL_TIM_Base_Start_IT(htim);
+      HAL_TIM_Base_Start(htim);
     }
 
     int read(){
-      uint8_t c = -1;
+      int c = -1;
       if(rind != getRdmaInd()){
         c = rbuf[rind++];
         rind &= rbuflen - 1;
@@ -75,17 +80,34 @@ class STM32Hardware {
       return c;
     }
 
+    void flush(void){
+      static bool mutex = false;
+
+      if((huart->gState == HAL_UART_STATE_READY) && !mutex){
+        mutex = true;
+
+        if(twind != tfind){
+          uint16_t len = tfind < twind ? twind - tfind : tbuflen - tfind;
+          HAL_UART_Transmit_DMA(huart, &(tbuf[tfind]), len);
+          tfind = (tfind + len) & (tbuflen - 1);
+        }
+        mutex = false;
+      }
+    }
+
     void write(uint8_t* data, int length){
       int n = length;
       n = n <= tbuflen ? n : tbuflen;
 
-      int n_tail = n <= tbuflen - tind ? n : tbuflen - tind;
-      memcpy(&(tbuf[tind]), data, n_tail);
-      tind = (tind + n) & (tbuflen - 1);
+      int n_tail = n <= tbuflen - twind ? n : tbuflen - twind;
+      memcpy(&(tbuf[twind]), data, n_tail);
+      twind = (twind + n) & (tbuflen - 1);
 
       if(n != n_tail){
     	memcpy(tbuf, &(data[n_tail]), n - n_tail);
       }
+
+      flush();
     }
 
     unsigned long time(){

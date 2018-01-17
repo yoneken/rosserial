@@ -86,7 +86,8 @@ rospack = rospkg.RosPack()
 rosserial_stm32_dir = rospack.get_path(THIS_PACKAGE)
 files = os.listdir(rosserial_stm32_dir+"/src/ros_lib")
 for f in files:
-  shutil.copy(rosserial_stm32_dir+"/src/ros_lib/"+f, path+"/Inc/")
+  if os.path.isfile(rosserial_stm32_dir+"/src/ros_lib/"+f):
+    shutil.copy(rosserial_stm32_dir+"/src/ros_lib/"+f, path+"/Inc/")
 rosserial_client_copy_files(rospack, path+"/Inc/")
 
 # generate messages
