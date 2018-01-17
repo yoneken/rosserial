@@ -11,4 +11,4 @@ $ rosrun rosserial_stm32 make_libraries.py .
 **Never forget to change the project type to _cpp project_ in SW4STM32!!**  
 
 ## Examples
-See rosserial_stm32/src/ros_lib/exaples  
+See rosserial_stm32/src/ros_lib/examples  
