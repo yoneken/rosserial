@@ -44,7 +44,7 @@ extern UART_HandleTypeDef huart2;
 
 class STM32Hardware {
   protected:
-	TIM_HandleTypeDef *htim;
+    TIM_HandleTypeDef *htim;
     UART_HandleTypeDef *huart;
 
     const static uint16_t rbuflen = 128;
@@ -104,15 +104,13 @@ class STM32Hardware {
       twind = (twind + n) & (tbuflen - 1);
 
       if(n != n_tail){
-    	memcpy(tbuf, &(data[n_tail]), n - n_tail);
+        memcpy(tbuf, &(data[n_tail]), n - n_tail);
       }
 
       flush();
     }
 
-    unsigned long time(){
-      return __HAL_TIM_GET_COUNTER(htim);
-    }
+    unsigned long time(){ return __HAL_TIM_GET_COUNTER(htim); }
 
   protected:
 };
