@@ -360,11 +360,6 @@ union I2C_SLV4_DI_REG{
   uint8_t I2C_SLV4_DI:8;
 };
 
-union I2C_SLV4_DI_REG{
-  uint8_t BYTE:8;
-  uint8_t I2C_SLV4_DI:8;
-};
-
 union I2C_MST_STATUS_REG{
   uint8_t BYTE:8;
   struct{
@@ -548,7 +543,7 @@ union USER_CTRL_REG{
     uint8_t FIFO_EN:1;
     uint8_t I2C_MST_EN:1;
     uint8_t I2C_IF_DIS:1;
-    uint8_t reserved:1;
+    uint8_t reserved2:1;
     uint8_t FIFO_RST:1;
     uint8_t I2C_MST_RST:1;
     uint8_t SIG_COND_RST:1;
@@ -642,6 +637,109 @@ union ZA_OFFSET_L_REG{
   };
 };
 
+enum AK8963_Reg{
+  WIA = 0x00,  // R
+  INFO = 0x01,  // R
+  ST1 = 0x02,  // R
+  HXL = 0x03,  // R
+  HXH = 0x04,  // R
+  HYL = 0x05,  // R
+  HYH = 0x06,  // R
+  HZL = 0x07,  // R
+  HZH = 0x08,  // R
+  ST2 = 0x09,  // R
+  CNTL = 0x0a,  // R/W
+  RSV = 0x0b,  // R/W
+  ASTC = 0x0c,  // R/W
+  TS1 = 0x0d,  // R/W
+  TS2 = 0x0e,  // R/W
+  I2CDIS = 0x0f,  // R/W
+  ASAX = 0x10,  // R
+  ASAY = 0x11,  // R
+  ASAZ = 0x12,  // R
+};
+
+union AK8963_WIA_REG{
+  uint8_t BYTE:8;
+  uint8_t WIA:8;
+};
+
+union AK8963_INFO_REG{
+  uint8_t BYTE:8;
+  struct{
+    uint8_t INFO7:1;
+    uint8_t INFO6:1;
+    uint8_t INFO5:1;
+    uint8_t INFO4:1;
+    uint8_t INFO3:1;
+    uint8_t INFO2:1;
+    uint8_t INFO1:1;
+    uint8_t INFO0:1;
+  };
+};
+
+union AK8963_ST1_REG{
+  uint8_t BYTE:8;
+  struct{
+    uint8_t reserved:7;
+    uint8_t DRDY:1;
+  };
+};
+
+union AK8963_ST2_REG{
+  uint8_t BYTE:8;
+  struct{
+    uint8_t reserved:3;
+    uint8_t BITM:1;
+    uint8_t HOFL:1;
+    uint8_t reserved2:3;
+  };
+};
+
+union AK8963_CNTL1_REG{
+  uint8_t BYTE:8;
+  struct{
+    uint8_t reserved:3;
+    uint8_t BIT:1;
+    uint8_t MODE:4;
+  };
+};
+
+enum AK8963_CNTL1_MODE{
+  POW_DWN_MODE = 0x00,
+  SINGLE_MES_MODE = 0x01,
+  CONT_MES_MODE1 = 0x02,
+  CONT_MES_MODE2 = 0x06,
+  EXT_TRIG_MES_MODE = 0x04,
+  SELF_TEST_MODE = 0x08,
+  FUSE_ROM_ACC_MODE = 0x0f,
+};
+
+enum AK8963_CNTL1_BIT{
+  OUT_14BIT = 0x0,
+  OUT_16BIT = 0x1,
+};
+
+union AK8963_CNTL2_REG{
+  uint8_t BYTE:8;
+  struct{
+    uint8_t reserved:7;
+    uint8_t SRST:1;
+  };
+};
+
+union AK8963_ASTC_REG{
+  uint8_t BYTE:8;
+  struct{
+    uint8_t reserved:1;
+    uint8_t SELF:1;
+    uint8_t reserved2:6;
+  };
+};
+
+enum AK8963_I2CDIS{
+  AK8963_I2CDIS = 0x1b,
+};
 
 
 #ifdef __cplusplus
