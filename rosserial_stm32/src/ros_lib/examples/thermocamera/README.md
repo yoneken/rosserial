@@ -1,4 +1,4 @@
-# Thermometer (an example for rosserial_stm32)
+# Thermocamera (an example for rosserial_stm32)
 
 ## HAL
 - [STM32CubeMX](http://www.st.com/ja/development-tools/stm32cubemx.html)
