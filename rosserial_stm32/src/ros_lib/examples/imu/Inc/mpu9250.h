@@ -154,50 +154,50 @@ union SMPLRT_DIV_REG{
 union CONFIG_REG{
   uint8_t BYTE:8;
   struct{
-     uint8_t reserved:1;
-     uint8_t FIFO_MODE:1;
-     uint8_t EXT_SYNC_SET:3;
      uint8_t DLPF_CFG:3;
+     uint8_t EXT_SYNC_SET:3;
+     uint8_t FIFO_MODE:1;
+     uint8_t reserved:1;
   };
 };
 
 union GYRO_CONFIG_REG{
   uint8_t BYTE:8;
   struct{
-     uint8_t XGYRO_Cten:1;
-     uint8_t YGYRO_Cten:1;
-     uint8_t ZGYRO_Cten:1;
-     uint8_t GYRO_FS_SEL:2;
-     uint8_t reserved:1;
      uint8_t Fchoice_b:2;
+     uint8_t reserved:1;
+     uint8_t GYRO_FS_SEL:2;
+     uint8_t ZGYRO_Cten:1;
+     uint8_t YGYRO_Cten:1;
+     uint8_t XGYRO_Cten:1;
   };
 };
 
 union ACCEL_CONFIG_REG{
   uint8_t BYTE:8;
   struct{
-     uint8_t ax_st_en:1;
-     uint8_t ay_st_en:1;
-     uint8_t az_st_en:1;
-     uint8_t ACCEL_FS_SEL:2;
      uint8_t reserved:3;
+     uint8_t ACCEL_FS_SEL:2;
+     uint8_t az_st_en:1;
+     uint8_t ay_st_en:1;
+     uint8_t ax_st_en:1;
   };
 };
 
 union ACCEL_CONFIG2_REG{
   uint8_t BYTE:8;
   struct{
-     uint8_t reserved:4;
-     uint8_t accel_fchoice_b:1;
      uint8_t A_DLPFCFG:3;
+     uint8_t accel_fchoice_b:1;
+     uint8_t reserved:4;
   };
 };
 
 union LP_ACCEL_ODR_REG{
   uint8_t BYTE:8;
   struct{
-     uint8_t reserved:4;
      uint8_t lposc_clksel:4;
+     uint8_t reserved:4;
   };
 };
 
@@ -209,25 +209,25 @@ union WOM_THR_REG{
 union FIFO_EN_REG{
   uint8_t BYTE:8;
   struct{
-     uint8_t TEMP_FIFO_EN:1;
-     uint8_t GYRO_XOUT:1;
-     uint8_t GYRO_YOUT:1;
-     uint8_t GYRO_ZOUT:1;
-     uint8_t ACCEL:1;
-     uint8_t SLV2:1;
-     uint8_t SLV1:1;
      uint8_t SLV0:1;
+     uint8_t SLV1:1;
+     uint8_t SLV2:1;
+     uint8_t ACCEL:1;
+     uint8_t GYRO_ZOUT:1;
+     uint8_t GYRO_YOUT:1;
+     uint8_t GYRO_XOUT:1;
+     uint8_t TEMP_FIFO_EN:1;
   };
 };
 
 union I2C_MST_CTRL_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t MULT_MST_EN:1;
-    uint8_t WAIT_FOR_ES:1;
-    uint8_t SLV_3_FIFO_EN:1;
-    uint8_t I2C_MST_P_NSR:1;
     uint8_t I2C_MST_CLK:4;
+    uint8_t I2C_MST_P_NSR:1;
+    uint8_t SLV_3_FIFO_EN:1;
+    uint8_t WAIT_FOR_ES:1;
+    uint8_t MULT_MST_EN:1;
   };
 };
 
@@ -253,8 +253,8 @@ enum I2C_MST_CLK_SPEED{
 union I2C_SLV0_ADDR_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t I2C_SLV0_RNW:1;
     uint8_t I2C_ID_0:7;
+    uint8_t I2C_SLV0_RNW:1;
   };
 };
 
@@ -266,19 +266,19 @@ union I2C_SLV0_REG_REG{
 union I2C_SLV0_CTRL_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t I2C_SLV0_EN:1;
-    uint8_t I2C_SLV0_BYTE_SW:1;
-    uint8_t I2C_SLV0_REG_DIS:1;
-    uint8_t I2C_SLV0_GRP:1;
     uint8_t I2C_SLV0_LENG:4;
+    uint8_t I2C_SLV0_GRP:1;
+    uint8_t I2C_SLV0_REG_DIS:1;
+    uint8_t I2C_SLV0_BYTE_SW:1;
+    uint8_t I2C_SLV0_EN:1;
   };
 };
 
 union I2C_SLV1_ADDR_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t I2C_SLV1_RNW:1;
     uint8_t I2C_ID_1:7;
+    uint8_t I2C_SLV1_RNW:1;
   };
 };
 
@@ -290,19 +290,19 @@ union I2C_SLV1_REG_REG{
 union I2C_SLV1_CTRL_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t I2C_SLV1_EN:1;
-    uint8_t I2C_SLV1_BYTE_SW:1;
-    uint8_t I2C_SLV1_REG_DIS:1;
-    uint8_t I2C_SLV1_GRP:1;
     uint8_t I2C_SLV1_LENG:4;
+    uint8_t I2C_SLV1_GRP:1;
+    uint8_t I2C_SLV1_REG_DIS:1;
+    uint8_t I2C_SLV1_BYTE_SW:1;
+    uint8_t I2C_SLV1_EN:1;
   };
 };
 
 union I2C_SLV2_ADDR_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t I2C_SLV2_RNW:1;
     uint8_t I2C_ID_2:7;
+    uint8_t I2C_SLV2_RNW:1;
   };
 };
 
@@ -314,19 +314,19 @@ union I2C_SLV2_REG_REG{
 union I2C_SLV2_CTRL_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t I2C_SLV2_EN:1;
-    uint8_t I2C_SLV2_BYTE_SW:1;
-    uint8_t I2C_SLV2_REG_DIS:1;
-    uint8_t I2C_SLV2_GRP:1;
     uint8_t I2C_SLV2_LENG:4;
+    uint8_t I2C_SLV2_GRP:1;
+    uint8_t I2C_SLV2_REG_DIS:1;
+    uint8_t I2C_SLV2_BYTE_SW:1;
+    uint8_t I2C_SLV2_EN:1;
   };
 };
 
 union I2C_SLV3_ADDR_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t I2C_SLV3_RNW:1;
     uint8_t I2C_ID_3:7;
+    uint8_t I2C_SLV3_RNW:1;
   };
 };
 
@@ -338,19 +338,19 @@ union I2C_SLV3_REG_REG{
 union I2C_SLV3_CTRL_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t I2C_SLV3_EN:1;
-    uint8_t I2C_SLV3_BYTE_SW:1;
-    uint8_t I2C_SLV3_REG_DIS:1;
-    uint8_t I2C_SLV3_GRP:1;
     uint8_t I2C_SLV3_LENG:4;
+    uint8_t I2C_SLV3_GRP:1;
+    uint8_t I2C_SLV3_REG_DIS:1;
+    uint8_t I2C_SLV3_BYTE_SW:1;
+    uint8_t I2C_SLV3_EN:1;
   };
 };
 
 union I2C_SLV4_ADDR_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t I2C_SLV4_RNW:1;
     uint8_t I2C_ID_4:7;
+    uint8_t I2C_SLV4_RNW:1;
   };
 };
 
@@ -367,10 +367,10 @@ union I2C_SLV4_DO_REG{
 union I2C_SLV4_CTRL_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t I2C_SLV4_EN:1;
-    uint8_t I2C_SLV4_DONE_INT_EN:1;
-    uint8_t I2C_SLV4_REG_DIS:1;
     uint8_t I2C_MST_DLY:5;
+    uint8_t I2C_SLV4_REG_DIS:1;
+    uint8_t I2C_SLV4_DONE_INT_EN:1;
+    uint8_t I2C_SLV4_EN:1;
   };
 };
 
@@ -382,40 +382,40 @@ union I2C_SLV4_DI_REG{
 union I2C_MST_STATUS_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t PASS_THROUGH:1;
-    uint8_t I2C_SLV4_DONE:1;
-    uint8_t I2C_LOST_ARB:1;
-    uint8_t I2C_SLV4_NACK:1;
-    uint8_t I2C_SLV3_NACK:1;
-    uint8_t I2C_SLV2_NACK:1;
-    uint8_t I2C_SLV1_NACK:1;
     uint8_t I2C_SLV0_NACK:1;
+    uint8_t I2C_SLV1_NACK:1;
+    uint8_t I2C_SLV2_NACK:1;
+    uint8_t I2C_SLV3_NACK:1;
+    uint8_t I2C_SLV4_NACK:1;
+    uint8_t I2C_LOST_ARB:1;
+    uint8_t I2C_SLV4_DONE:1;
+    uint8_t PASS_THROUGH:1;
   };
 };
 
 union INT_PIN_CFG_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t ACTL:1;
-    uint8_t OPEN:1;
-    uint8_t LATCH_INT_EN:1;
-    uint8_t INT_ANYRD_2CLEAR:1;
-    uint8_t ACTL_FSYNC:1;
-    uint8_t FSYNC_INT_MODE_EN:1;
-    uint8_t BYPASS_EN:1;
     uint8_t reserved:1;
+    uint8_t BYPASS_EN:1;
+    uint8_t FSYNC_INT_MODE_EN:1;
+    uint8_t ACTL_FSYNC:1;
+    uint8_t INT_ANYRD_2CLEAR:1;
+    uint8_t LATCH_INT_EN:1;
+    uint8_t OPEN:1;
+    uint8_t ACTL:1;
   };
 };
 
 union INT_ENABLE_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t reserved:1;
-    uint8_t WOM_EN:1;
-    uint8_t reserved2:1;
-    uint8_t FIFO_OFLOW_EN:1;
-    uint8_t FSYNC_INT_EN:1;
     uint8_t reserved3:2;
+    uint8_t FSYNC_INT_EN:1;
+    uint8_t FIFO_OFLOW_EN:1;
+    uint8_t reserved2:1;
+    uint8_t WOM_EN:1;
+    uint8_t reserved:1;
     uint8_t RAW_RDY_EN:1;
   };
 };

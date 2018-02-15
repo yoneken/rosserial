@@ -66,7 +66,7 @@ uint8_t rbuf[64];
 
 
 void SPI_Mem_Transmit(void){
-  if((!flag_transmit) && (!spiq.empty())){
+  if(!flag_transmit){
     flag_transmit = true;
     SPI_Mem m = spiq.front();
     HAL_GPIO_WritePin(GPIOA, m.chip, GPIO_PIN_RESET);
@@ -90,7 +90,7 @@ void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi){
   if(m.callback != NULL) m.callback(&(rbuf[1]));
   spiq.pop();
   flag_transmit = false;
-  SPI_Mem_Transmit();
+  if(!spiq.empty()) SPI_Mem_Transmit();
 }
 
 void cb_whoami(uint8_t dat[]){
@@ -124,6 +124,7 @@ void setup(void)
   USER_CTRL_REG uctr[1] = {0};
   uctr[0].I2C_MST_EN = 1;	// Enable the I2C Master I/F module
   uctr[0].I2C_IF_DIS = 1;	// Disable I2C Slave module and put the serial interface in SPI mode only
+  //uctr[0].BYTE = 0x30;
   SPI_Mem_Write(CS_IMU_Pin, USER_CTRL, 1, (uint8_t*)uctr);
 
   I2C_MST_CTRL_REG i2cmctr[1] = {0};
@@ -179,6 +180,8 @@ void loop(void)
   I2C_SLV0_CTRL_REG i2cctr[1] = {0};
   i2cctr[0].I2C_SLV0_EN = 1;	// Eneble I2C
   i2cctr[0].I2C_SLV0_LENG = 7;	// Read 7 byte from HXL to ST2
+  SPI_Mem_Write(CS_IMU_Pin, I2C_SLV0_CTRL, 1, (uint8_t*)i2cctr);
+
   SPI_Mem_Read(CS_IMU_Pin, EXT_SENS_DATA, cb_mag_sense, 7);
   /*
   if(!flag){
