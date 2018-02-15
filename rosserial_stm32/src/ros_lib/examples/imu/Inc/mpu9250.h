@@ -231,6 +231,25 @@ union I2C_MST_CTRL_REG{
   };
 };
 
+enum I2C_MST_CLK_SPEED{
+  _348kHz = 0,
+  _333kHz = 1,
+  _320kHz = 2,
+  _308kHz = 3,
+  _296kHz = 4,
+  _286kHz = 5,
+  _276kHz = 6,
+  _267kHz = 7,
+  _258kHz = 8,
+  _500kHz = 9,
+  _471kHz = 10,
+  _444kHz = 11,
+  _421kHz = 12,
+  _400kHz = 13,
+  _381kHz = 14,
+  _364kHz = 15,
+};
+
 union I2C_SLV0_ADDR_REG{
   uint8_t BYTE:8;
   struct{
@@ -239,7 +258,7 @@ union I2C_SLV0_ADDR_REG{
   };
 };
 
-union I2C_SLV0_REG{
+union I2C_SLV0_REG_REG{
   uint8_t BYTE:8;
   uint8_t I2C_SLV0_REG:8;
 };
@@ -263,7 +282,7 @@ union I2C_SLV1_ADDR_REG{
   };
 };
 
-union I2C_SLV1_REG{
+union I2C_SLV1_REG_REG{
   uint8_t BYTE:8;
   uint8_t I2C_SLV1_REG:8;
 };
@@ -287,7 +306,7 @@ union I2C_SLV2_ADDR_REG{
   };
 };
 
-union I2C_SLV2_REG{
+union I2C_SLV2_REG_REG{
   uint8_t BYTE:8;
   uint8_t I2C_SLV2_REG:8;
 };
@@ -311,7 +330,7 @@ union I2C_SLV3_ADDR_REG{
   };
 };
 
-union I2C_SLV3_REG{
+union I2C_SLV3_REG_REG{
   uint8_t BYTE:8;
   uint8_t I2C_SLV3_REG:8;
 };
@@ -335,7 +354,7 @@ union I2C_SLV4_ADDR_REG{
   };
 };
 
-union I2C_SLV4_REG{
+union I2C_SLV4_REG_REG{
   uint8_t BYTE:8;
   uint8_t I2C_SLV4_REG:8;
 };
@@ -649,7 +668,7 @@ enum AK8963_Reg{
   HZH = 0x08,  // R
   ST2 = 0x09,  // R
   CNTL = 0x0a,  // R/W
-  RSV = 0x0b,  // R/W
+  CNTL2 = 0x0b,  // R/W
   ASTC = 0x0c,  // R/W
   TS1 = 0x0d,  // R/W
   TS2 = 0x0e,  // R/W

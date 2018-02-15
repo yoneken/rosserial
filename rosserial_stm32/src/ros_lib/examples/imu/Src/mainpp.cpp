@@ -108,16 +108,78 @@ void cb_sense(uint8_t dat[]){
   gyro[2] = dat[12] << 8 | dat[13];
 }
 
+void cb_mag_sense(uint8_t dat[]){
+  short magnet[3];
+  magnet[0] = dat[0] | dat[1] << 8;
+  magnet[1] = dat[2] | dat[3] << 8;
+  magnet[2] = dat[4] | dat[5] << 8;
+}
+
 void setup(void)
 {
   nh.initNode();
   //nh.advertise(thermo);
+
+  // Initialize I2C Master mode of mpu9250
+  USER_CTRL_REG uctr[1] = {0};
+  uctr[0].I2C_MST_EN = 1;	// Enable the I2C Master I/F module
+  uctr[0].I2C_IF_DIS = 1;	// Disable I2C Slave module and put the serial interface in SPI mode only
+  SPI_Mem_Write(CS_IMU_Pin, USER_CTRL, 1, (uint8_t*)uctr);
+
+  I2C_MST_CTRL_REG i2cmctr[1] = {0};
+  i2cmctr[0].I2C_MST_CLK = _400kHz;	// Set I2c Master clock to 400kHz
+  SPI_Mem_Write(CS_IMU_Pin, I2C_MST_CTRL, 1, (uint8_t*)i2cmctr);
+
+  // Reset AK8963 (Magnetometer implemented on mpu9250) through I2C
+  I2C_SLV0_ADDR_REG i2caddr[1] = {0};
+  i2caddr[0].I2C_ID_0 = 0x0c;	// Since AK8963 is addressed on 0x0c
+  SPI_Mem_Write(CS_IMU_Pin, I2C_SLV0_ADDR, 1, (uint8_t*)i2caddr);
+
+  I2C_SLV0_REG_REG i2creg[1] = {0};
+  i2creg[0].BYTE = CNTL2;
+  SPI_Mem_Write(CS_IMU_Pin, I2C_SLV0_REG, 1, (uint8_t*)i2creg);
+
+  AK8963_CNTL2_REG cntl2[1] = {0};
+  cntl2[0].SRST = 1;	// Enable reset
+  SPI_Mem_Write(CS_IMU_Pin, I2C_SLV0_DO, 1, (uint8_t*)cntl2);
+
+  I2C_SLV0_CTRL_REG i2cctr[1] = {0};
+  i2cctr[0].I2C_SLV0_EN = 1;	// Eneble I2C
+  i2cctr[0].I2C_SLV0_LENG = 1;	// Write 1 byte
+  SPI_Mem_Write(CS_IMU_Pin, I2C_SLV0_CTRL, 1, (uint8_t*)i2cctr);
+
+  // Initialize AK8963 for continuous sensing mode through I2C
+  i2creg[0].BYTE = CNTL;
+  SPI_Mem_Write(CS_IMU_Pin, I2C_SLV0_REG, 1, (uint8_t*)i2creg);
+
+  AK8963_CNTL1_REG cntl1[1] = {0};
+  cntl1[0].MODE = CONT_MES_MODE2;	// continuous measuring mode
+  cntl1[0].BIT = OUT_16BIT;			// measure 16 bit
+  SPI_Mem_Write(CS_IMU_Pin, I2C_SLV0_DO, 1, (uint8_t*)cntl1);
+
+  SPI_Mem_Write(CS_IMU_Pin, I2C_SLV0_CTRL, 1, (uint8_t*)i2cctr);
+
 }
 
 void loop(void)
 {
-  SPI_Mem_Read(CS_IMU_Pin, WHO_AM_I, cb_whoami, 1);
+  //SPI_Mem_Read(CS_IMU_Pin, WHO_AM_I, cb_whoami, 1);
   SPI_Mem_Read(CS_IMU_Pin, ACCEL_XOUT_H, cb_sense, 14);
+
+  // Read magnetometer through I2C
+  I2C_SLV0_ADDR_REG i2caddr[1] = {0};
+  i2caddr[0].I2C_ID_0 = 0x0c;	// Since AK8963 is addressed on 0x0c
+  i2caddr[0].I2C_SLV0_RNW = 1;	// read flag
+  SPI_Mem_Write(CS_IMU_Pin, I2C_SLV0_ADDR, 1, (uint8_t*)i2caddr);
+
+  I2C_SLV0_REG_REG i2creg[1] = {0};
+  i2creg[0].BYTE = HXL;
+  SPI_Mem_Write(CS_IMU_Pin, I2C_SLV0_REG, 1, (uint8_t*)i2creg);
+
+  I2C_SLV0_CTRL_REG i2cctr[1] = {0};
+  i2cctr[0].I2C_SLV0_EN = 1;	// Eneble I2C
+  i2cctr[0].I2C_SLV0_LENG = 7;	// Read 7 byte from HXL to ST2
+  SPI_Mem_Read(CS_IMU_Pin, EXT_SENS_DATA, cb_mag_sense, 7);
   /*
   if(!flag){
     flag = true;
