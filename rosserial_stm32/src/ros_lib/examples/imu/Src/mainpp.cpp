@@ -44,6 +44,9 @@ public:
     }
   }
   virtual ~SPI_Mem(){ delete[] data; }
+  SPI_Mem(const SPI_Mem& mem)
+    : chip(mem.chip), data_num(mem.data_num), data(new uint8_t[1+mem.data_num]), callback(mem.callback)
+  { memcpy(data, mem.data, data_num + 1); }
 
   SPI_Mem& Copy(const SPI_Mem& mem)
   {
@@ -53,6 +56,7 @@ public:
     memcpy((void *)data, mem.data, 1+mem.data_num);
     return *this;
   }
+
   SPI_Mem& operator =(const SPI_Mem& mem){ return Copy(mem); }
 };
 
