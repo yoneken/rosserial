@@ -410,26 +410,26 @@ union INT_PIN_CFG_REG{
 union INT_ENABLE_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t reserved3:2;
+    uint8_t RAW_RDY_EN:1;
+    uint8_t reserved:2;
     uint8_t FSYNC_INT_EN:1;
     uint8_t FIFO_OFLOW_EN:1;
     uint8_t reserved2:1;
     uint8_t WOM_EN:1;
-    uint8_t reserved:1;
-    uint8_t RAW_RDY_EN:1;
+    uint8_t reserved3:1;
   };
 };
 
 union INT_STATUS_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t reserved:1;
-    uint8_t WOM_INT:1;
-    uint8_t reserved2:1;
-    uint8_t FIFO_OFLOW_INT:1;
-    uint8_t FSYNC_INT:1;
-    uint8_t reserved3:2;
     uint8_t RAW_DATA_RDY_INT:1;
+    uint8_t reserved3:2;
+    uint8_t FSYNC_INT:1;
+    uint8_t FIFO_OFLOW_INT:1;
+    uint8_t reserve2:1;
+    uint8_t WOM_INT:1;
+    uint8_t reserved:1;
   };
 };
 
@@ -526,79 +526,79 @@ union I2C_SLV3_DO_REG{
 union I2C_MST_DELAY_CTRL_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t DELAY_ES_SHADOW:1;
-    uint8_t reserved:2;
-    uint8_t I2C_SLV4_DLY_EN:1;
-    uint8_t I2C_SLV3_DLY_EN:1;
-    uint8_t I2C_SLV2_DLY_EN:1;
-    uint8_t I2C_SLV1_DLY_EN:1;
     uint8_t I2C_SLV0_DLY_EN:1;
+    uint8_t I2C_SLV1_DLY_EN:1;
+    uint8_t I2C_SLV2_DLY_EN:1;
+    uint8_t I2C_SLV3_DLY_EN:1;
+    uint8_t I2C_SLV4_DLY_EN:1;
+    uint8_t reserved:2;
+    uint8_t DELAY_ES_SHADOW:1;
   };
 };
 
 union SIGNAL_PATH_RESET_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t reserved:5;
-    uint8_t GYRO_RST:1;
-    uint8_t ACCEL_RST:1;
     uint8_t TEMP_RST:1;
+    uint8_t ACCEL_RST:1;
+    uint8_t GYRO_RST:1;
+    uint8_t reserved:5;
   };
 };
 
 union MOT_DETECT_CTRL_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t ACCEL_INTEL_EN:1;
-    uint8_t ACCEL_INTEL_MODE:1;
     uint8_t reserved:6;
+    uint8_t ACCEL_INTEL_MODE:1;
+    uint8_t ACCEL_INTEL_EN:1;
   };
 };
 
 union USER_CTRL_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t reserved:1;
-    uint8_t FIFO_EN:1;
-    uint8_t I2C_MST_EN:1;
-    uint8_t I2C_IF_DIS:1;
-    uint8_t reserved2:1;
-    uint8_t FIFO_RST:1;
-    uint8_t I2C_MST_RST:1;
     uint8_t SIG_COND_RST:1;
+    uint8_t I2C_MST_RST:1;
+    uint8_t FIFO_RST:1;
+    uint8_t reserved2:1;
+    uint8_t I2C_IF_DIS:1;
+    uint8_t I2C_MST_EN:1;
+    uint8_t FIFO_EN:1;
+    uint8_t reserved:1;
   };
 };
 
 union PWR_MGMT_1_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t H_RESET:1;
-    uint8_t SLEEP:1;
-    uint8_t CYCLE:1;
-    uint8_t GYRO_STANDBY:1;
-    uint8_t PD_PTAT:1;
     uint8_t CLKSEL:3;
+    uint8_t PD_PTAT:1;
+    uint8_t GYRO_STANDBY:1;
+    uint8_t CYCLE:1;
+    uint8_t SLEEP:1;
+    uint8_t H_RESET:1;
   };
 };
 
 union PWR_MGMT_2_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t reserved:2;
-    uint8_t DIS_XA:1;
-    uint8_t DIS_YA:1;
-    uint8_t DIS_ZA:1;
-    uint8_t DIS_XG:1;
-    uint8_t DIS_YG:1;
     uint8_t DIS_ZG:1;
+    uint8_t DIS_YG:1;
+    uint8_t DIS_XG:1;
+    uint8_t DIS_ZA:1;
+    uint8_t DIS_YA:1;
+    uint8_t DIS_XA:1;
+    uint8_t reserved:2;
   };
 };
 
 union FIFO_COUNTH_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t reserved:3;
     uint8_t FIFO_CNT:5;
+    uint8_t reserved:3;
   };
 };
 
@@ -625,8 +625,8 @@ union XA_OFFSET_H_REG{
 union XA_OFFSET_L_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t XA_OFFS:7;
     uint8_t reserved:1;
+    uint8_t XA_OFFS:7;
   };
 };
 
@@ -638,8 +638,8 @@ union YA_OFFSET_H_REG{
 union YA_OFFSET_L_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t YA_OFFS:7;
     uint8_t reserved:1;
+    uint8_t YA_OFFS:7;
   };
 };
 
@@ -651,8 +651,8 @@ union ZA_OFFSET_H_REG{
 union ZA_OFFSET_L_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t ZA_OFFS:7;
     uint8_t reserved:1;
+    uint8_t ZA_OFFS:7;
   };
 };
 
@@ -686,22 +686,23 @@ union AK8963_WIA_REG{
 union AK8963_INFO_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t INFO7:1;
-    uint8_t INFO6:1;
-    uint8_t INFO5:1;
-    uint8_t INFO4:1;
-    uint8_t INFO3:1;
-    uint8_t INFO2:1;
-    uint8_t INFO1:1;
     uint8_t INFO0:1;
+    uint8_t INFO1:1;
+    uint8_t INFO2:1;
+    uint8_t INFO3:1;
+    uint8_t INFO4:1;
+    uint8_t INFO5:1;
+    uint8_t INFO6:1;
+    uint8_t INFO7:1;
   };
 };
 
 union AK8963_ST1_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t reserved:7;
     uint8_t DRDY:1;
+    uint8_t DOR:1;
+    uint8_t reserved:6;
   };
 };
 
@@ -709,8 +710,8 @@ union AK8963_ST2_REG{
   uint8_t BYTE:8;
   struct{
     uint8_t reserved:3;
-    uint8_t BITM:1;
     uint8_t HOFL:1;
+    uint8_t BITM:1;
     uint8_t reserved2:3;
   };
 };
@@ -718,9 +719,9 @@ union AK8963_ST2_REG{
 union AK8963_CNTL1_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t reserved:3;
-    uint8_t BIT:1;
     uint8_t MODE:4;
+    uint8_t BIT:1;
+    uint8_t reserved:3;
   };
 };
 
@@ -742,17 +743,17 @@ enum AK8963_CNTL1_BIT{
 union AK8963_CNTL2_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t reserved:7;
     uint8_t SRST:1;
+    uint8_t reserved:7;
   };
 };
 
 union AK8963_ASTC_REG{
   uint8_t BYTE:8;
   struct{
-    uint8_t reserved:1;
+    uint8_t reserved:6;
     uint8_t SELF:1;
-    uint8_t reserved2:6;
+    uint8_t reserved2:1;
   };
 };
 
