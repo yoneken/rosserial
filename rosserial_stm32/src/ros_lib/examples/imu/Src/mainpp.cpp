@@ -67,18 +67,20 @@ public:
   SPI_Mem& operator =(const SPI_Mem& mem){ return Copy(mem); }
 };
 
-volatile bool flag_transmit = false;
 std::queue<std::shared_ptr<SPI_Mem>>spiq;
 uint8_t rbuf[64];
 
 
 void SPI_Mem_Transmit(void){
   HAL_SPI_StateTypeDef state = HAL_SPI_GetState(&hspi1);
-  if(!flag_transmit){
-    flag_transmit = true;
+
+  volatile static bool mutex = false;
+  if((!mutex)&&(state == HAL_SPI_STATE_READY)){	// Only one transmit process is allowed
+    mutex = true;
     SPI_Mem *m = spiq.front().get();
     HAL_GPIO_WritePin(GPIOA, m->chip, GPIO_PIN_RESET);
     HAL_SPI_TransmitReceive_DMA(&hspi1, m->data.get(), rbuf, 1+m->data_num);
+    mutex = false;
   }
 }
 
@@ -93,12 +95,11 @@ void SPI_Mem_Read(unsigned short int chip, uint8_t address, void (*callback)(uin
 }
 
 void HAL_SPI_TxRxCpltCallback(SPI_HandleTypeDef *hspi){
-  SPI_Mem *m = spiq.front().get();
+  SPI_Mem *m = spiq.front().get();	// This instance must be the same with one which was gotten in SPI_Mem_Trransmit()
   HAL_GPIO_WritePin(GPIOA, m->chip, GPIO_PIN_SET);
   if(m->callback != NULL) m->callback(&(rbuf[1]));
   uint8_t s = spiq.size();
   spiq.pop();
-  flag_transmit = false;
   if(!spiq.empty()) SPI_Mem_Transmit();
 }
 
